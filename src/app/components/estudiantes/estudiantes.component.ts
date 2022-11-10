@@ -49,25 +49,25 @@ export class EstudiantesComponent implements OnInit {
 
   FormRegistro = new FormGroup({
     EstudianteID: new FormControl(0),
-    Nombre: new FormControl('', [
+    EstudianteAyN: new FormControl('', [
       Validators.required,
       Validators.minLength(4),
       Validators.maxLength(55),
     ]),
 
-    Legajo: new FormControl(null, [
+    EstudianteLegajo: new FormControl(null, [
       Validators.required,
       Validators.pattern('[0-9]{1,7}'),
     ]),
 
     BarrioID: new FormControl('', [Validators.required]),
-    FechaNac: new FormControl('', [
+    EstudianteFechaNac: new FormControl('', [
       Validators.required,
       Validators.pattern(
         '(0[1-9]|[12][0-9]|3[01])[-/](0[1-9]|1[012])[-/](19|20)[0-9]{2}'
       ),
     ]),
-    Regular: new FormControl(true),
+    EstudianteRegular: new FormControl(true),
   });
 
   submitted = false;
@@ -147,8 +147,8 @@ export class EstudiantesComponent implements OnInit {
        this.FormRegistro.patchValue(res);
 
       //formatear fecha de  ISO 8061 a string dd/MM/yyyy
-       var arrFecha = res.FechaNac.substr(0, 10).split('-');
-       this.FormRegistro.controls.FechaNac.patchValue(
+       var arrFecha = res.EstudianteFechaNac.substr(0, 10).split('-');
+       this.FormRegistro.controls.EstudianteFechaNac.patchValue(
          arrFecha[2] + '/' + arrFecha[1] + '/' + arrFecha[0]
        );
 
@@ -185,32 +185,23 @@ export class EstudiantesComponent implements OnInit {
     const itemCopy = { ...this.FormRegistro.value };
 
     //convertir fecha de string dd/MM/yyyy a ISO para que la entienda webapi
-    var arrFecha = itemCopy.FechaNac.substr(0, 10).split('/');
+    var arrFecha = itemCopy.EstudianteFechaNac.substr(0, 10).split('/');
     if (arrFecha.length == 3)
-      itemCopy.FechaNac = new Date(
+      itemCopy.EstudianteFechaNac = new Date(
         arrFecha[2],
         arrFecha[1] - 1,
         arrFecha[0]
       ).toISOString();
 
     // agregar post
-    // if (this.AccionABMC == 'A') {
-      if(itemCopy.EstudianteID == 0 || itemCopy.EstudianteID == null) {
+      if (this.AccionABMC == 'A') {
+      // if(itemCopy.EstudianteID == 0 || itemCopy.EstudianteID == null) {
         itemCopy.EstudianteID = 0;
         this.estudiantesService.post(itemCopy).subscribe((res: any) => {
         this.Volver();
         this.modalDialogService.Alert('Registro agregado correctamente.');
         this.Buscar();
       });
-    } else {
-    //   // modificar put
-    //   this.articulosService
-    //     .put(itemCopy.IdArticulo, itemCopy)
-    //     .subscribe((res: any) => {
-    //       this.Volver();
-    //       this.modalDialogService.Alert('Registro modificado correctamente.');
-    //       this.Buscar();
-    //     });
     }
   }
 

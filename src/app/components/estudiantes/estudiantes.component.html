@@ -105,21 +105,21 @@
       <!--campo nombre-->
       <div class="row">
         <div class="col-sm-4 col-md-3 offset-md-1">
-          <label class="col-form-label" for="Nombre">Nombre<span
+          <label class="col-form-label" for="EstudianteAyN">Nombre<span
                     class="text-danger">*</span>:</label>
         </div>
         <div class="col-sm-8 col-md-6">
-          <input type="text" class="form-control" formControlName="Nombre"
-         [ngClass]="{'is-invalid': (FormRegistro.controls['Nombre'].touched || submitted)  
-            && FormRegistro.controls['Nombre'].errors}"/>
+          <input type="text" class="form-control" formControlName="EstudianteAyN"
+         [ngClass]="{'is-invalid': (FormRegistro.controls['EstudianteAyN'].touched || submitted)  
+            && FormRegistro.controls['EstudianteAyN'].errors}"/>
 
-          <div class="validacion" *ngIf="(FormRegistro.controls['Nombre'].touched || submitted) 
-                        && FormRegistro.controls['Nombre'].hasError('required')">
+          <div class="validacion" *ngIf="(FormRegistro.controls['EstudianteAyN'].touched || submitted) 
+                        && FormRegistro.controls['EstudianteAyN'].hasError('required')">
             Dato requerido.
           </div>
           <div class="validacion"
-            *ngIf="(FormRegistro.controls['Nombre'].touched || submitted) 
-                       && (FormRegistro.controls['Nombre'].hasError('minlength') || FormRegistro.controls['Nombre'].hasError('maxlength')) ">
+            *ngIf="(FormRegistro.controls['EstudianteAyN'].touched || submitted) 
+                       && (FormRegistro.controls['EstudianteAyN'].hasError('minlength') || FormRegistro.controls['EstudianteAyN'].hasError('maxlength')) ">
             Dato texto, 4 a 55 caracteres.
           </div>
 
@@ -130,20 +130,20 @@
       <!--campo legajo-->
       <div class="row">
         <div class="col-sm-4 col-md-3 offset-md-1">
-          <label class="col-form-label" for="Legajo">
+          <label class="col-form-label" for="EstudianteLegajo">
             Legajo<span class="text-danger">*</span>:
           </label>
         </div>
         <div class="col-sm-8 col-md-6">
-          <input type="text" name="Legajo" class="form-control" formControlName="Legajo"
-        [ngClass]="{'is-invalid': (FormRegistro.controls['Legajo'].touched || submitted)  
-            && FormRegistro.controls['Legajo'].errors}" />
-          <div class="validacion" *ngIf="(FormRegistro.controls['Legajo'].touched || submitted) 
-                        && FormRegistro.controls['Legajo'].hasError('required')">
+          <input type="text" name="EstudianteLegajo" class="form-control" formControlName="EstudianteLegajo"
+        [ngClass]="{'is-invalid': (FormRegistro.controls['EstudianteLegajo'].touched || submitted)  
+            && FormRegistro.controls['EstudianteLegajo'].errors}" />
+          <div class="validacion" *ngIf="(FormRegistro.controls['EstudianteLegajo'].touched || submitted) 
+                        && FormRegistro.controls['EstudianteLegajo'].hasError('required')">
             Dato requerido.
           </div>
-          <div class="validacion" *ngIf="(FormRegistro.controls['Legajo'].touched || submitted) 
-                        && FormRegistro.controls['Legajo'].hasError('pattern')">
+          <div class="validacion" *ngIf="(FormRegistro.controls['EstudianteLegajo'].touched || submitted) 
+                        && FormRegistro.controls['EstudianteLegajo'].hasError('pattern')">
             Dato numérico, 1 a 7 dígitos.
           </div>
         </div>
@@ -180,17 +180,17 @@
           </label>
         </div>
         <div class="col-sm-8 col-md-6">
-          <input class="form-control" formControlName="FechaNac"
-                           name="FechaNac"
-                           [ngClass]="{'is-invalid': (FormRegistro.controls['FechaNac'].touched || submitted)  
-            && FormRegistro.controls['FechaNac'].errors}" />
+          <input class="form-control" formControlName="EstudianteFechaNac"
+                           name="EstudianteFechaNac"
+                           [ngClass]="{'is-invalid': (FormRegistro.controls['EstudianteFechaNac'].touched || submitted)  
+            && FormRegistro.controls['EstudianteFechaNac'].errors}" />
 
-          <div class="validacion" *ngIf="(FormRegistro.controls['FechaNac'].touched || submitted) 
-                       && FormRegistro.controls['FechaNac'].hasError('required')">
+          <div class="validacion" *ngIf="(FormRegistro.controls['EstudianteFechaNac'].touched || submitted) 
+                       && FormRegistro.controls['EstudianteFechaNac'].hasError('required')">
             Dato requerido.
           </div>
-          <div class="validacion" *ngIf="(FormRegistro.controls['FechaNac'].touched || submitted) 
-                       && FormRegistro.controls['FechaNac'].hasError('pattern')">
+          <div class="validacion" *ngIf="(FormRegistro.controls['EstudianteFechaNac'].touched || submitted) 
+                       && FormRegistro.controls['EstudianteFechaNac'].hasError('pattern')">
             Dato fecha, formato dd/mm/aaaa.
           </div>
         </div>
@@ -199,12 +199,12 @@
       <!--campo Regular-->
       <div class="row">
         <div class="col-sm-4 col-md-3 offset-md-1">
-          <label class="col-form-label" for="Regular">Regular:</label>
+          <label class="col-form-label" for="EstudianteRegular">Regular:</label>
         </div>
         <div class="col-sm-8 col-md-6">
           <!-- ref?? disabled html no fucniona en reactive forms? -->
           <!-- <select class="form-control" name="Regular" formControlName="Regular" [disabled]="true"> -->
-          <select class="form-control" name="Regular" formControlName="Regular">
+          <select class="form-control" name="EstudianteRegular" formControlName="EstudianteRegular">
             <option *ngFor="let opt of OpcionesRegular"  [ngValue]="opt.Id">
                         ‌{{ opt.Nombre }}
 			      </option>            
