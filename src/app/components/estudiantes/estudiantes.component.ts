@@ -113,7 +113,7 @@ export class EstudiantesComponent implements OnInit {
     // });
 
     this.GetBarrios();
-    this.Buscar();
+    //this.Buscar();
   }
 
   GetBarrios() {
@@ -134,8 +134,8 @@ export class EstudiantesComponent implements OnInit {
    Buscar() {
      this.estudiantesService
        .get().subscribe((res: any) => {
-         this.Items = res.Items;
-         this.RegistrosTotal = res.RegistrosTotal;
+         this.Items = res;
+         //this.RegistrosTotal = res.RegistrosTotal;
        });
    }
 
@@ -157,8 +157,8 @@ export class EstudiantesComponent implements OnInit {
    }
 
   Consultar(Item) {
-    this.BuscarPorId(Item, 'C');
-  }
+  this.BuscarPorId(Item, 'C');
+   }
 
   // comienza la modificacion, luego la confirma con el metodo Grabar
   // Modificar(Item) {
@@ -194,21 +194,23 @@ export class EstudiantesComponent implements OnInit {
       ).toISOString();
 
     // agregar post
-    if (this.AccionABMC == 'A') {
-      this.estudiantesService.post(itemCopy).subscribe((res: any) => {
+    // if (this.AccionABMC == 'A') {
+      if(itemCopy.EstudianteID == 0 || itemCopy.EstudianteID == null) {
+        itemCopy.EstudianteID = 0;
+        this.estudiantesService.post(itemCopy).subscribe((res: any) => {
         this.Volver();
         this.modalDialogService.Alert('Registro agregado correctamente.');
         this.Buscar();
       });
     } else {
-      // modificar put
-      this.articulosService
-        .put(itemCopy.IdArticulo, itemCopy)
-        .subscribe((res: any) => {
-          this.Volver();
-          this.modalDialogService.Alert('Registro modificado correctamente.');
-          this.Buscar();
-        });
+    //   // modificar put
+    //   this.articulosService
+    //     .put(itemCopy.IdArticulo, itemCopy)
+    //     .subscribe((res: any) => {
+    //       this.Volver();
+    //       this.modalDialogService.Alert('Registro modificado correctamente.');
+    //       this.Buscar();
+    //     });
     }
   }
 

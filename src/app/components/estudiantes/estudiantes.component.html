@@ -58,18 +58,18 @@
         <td class="text-right">{{Item.EstudianteFechaNac| date:'dd/MM/yyyy'}}</td>
         <td>{{Item.EstudianteRegular ? 'SI' : 'NO'}}</td>
         <td class="text-right">{{GetBarriosNombre(Item.BarrioID)}}</td>       
-        <td class="text-center text-nowrap">
+        <!-- <td class="text-center text-nowrap">
           <button class="btn btn-sm btn-outline-primary" title="Consultar" (click)="Consultar(Item)">
                     <i class="fa fa-eye"></i>
-                <!-- </button>
-          <button class="btn btn-sm btn-outline-primary" title="Modificar" (click)="Modificar(Item)">
+                </button> -->
+          <!-- <button class="btn btn-sm btn-outline-primary" title="Modificar" (click)="Modificar(Item)">
                     <i class="fa fa-pencil"></i>
                 </button> -->
-          <button class="btn btn-sm" [ngClass]="{'btn-outline-danger': Item.EstudianteRegular, 'btn-outline-success': !Item.EstudianteRegular}"
+          <!-- <button class="btn btn-sm" [ngClass]="{'btn-outline-danger': Item.EstudianteRegular, 'btn-outline-success': !Item.EstudianteRegular}"
                     title="{{Item.EstudianteRegular ? 'Desactivar':'Activar'}}" (click)="ActivarDesactivar(Item)">
                     <i class="fa fa-{{Item.EstudianteRegular ? 'times':'check'}}"></i>
-                </button>
-        </td>
+                </button> -->
+        <!-- </td> -->
       </tr>
     </tbody>
   </table>
@@ -203,7 +203,8 @@
         </div>
         <div class="col-sm-8 col-md-6">
           <!-- ref?? disabled html no fucniona en reactive forms? -->
-          <select class="form-control" name="Regular" formControlName="Regular" [disabled]="true">
+          <!-- <select class="form-control" name="Regular" formControlName="Regular" [disabled]="true"> -->
+          <select class="form-control" name="Regular" formControlName="Regular">
             <option *ngFor="let opt of OpcionesRegular"  [ngValue]="opt.Id">
                         ‌{{ opt.Nombre }}
 			      </option>            
