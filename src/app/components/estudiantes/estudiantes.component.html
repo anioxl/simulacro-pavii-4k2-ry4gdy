@@ -1,0 +1,233 @@
+<div class='tituloPagina'>
+  {{Titulo}} <small>{{TituloAccionABMC[AccionABMC]}}</small>
+</div>
+
+<!-- Formulario Filtro de busqueda, se ve cuando la accion es Listado(busqueda/listado)-->
+<!-- <form name="FormBusqueda" [formGroup]='FormBusqueda' *ngIf="AccionABMC == 'L'">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-4 col-md-2">
+        <label class="col-form-label">Nombre:</label>
+      </div>
+      <div class="col-sm-8 col-md-4">
+        <input type="text" name="Nombre" class="form-control" formControlName="Nombre" maxlength="55"/>
+      </div>
+      <div class="col-sm-4 col-md-2">
+        <label class="col-form-label">Activo:</label>
+      </div>
+      <div class="col-sm-8 col-md-4">
+        <select class="form-control" name="Activo" formControlName="Activo" >
+            <option *ngFor="let opt of OpcionesActivo" [ngValue]="opt.Id">
+                        ‌{{ opt.Nombre }}
+			</option>            
+          </select>
+      </div>
+    </div> -->
+
+    <hr>
+
+    <!-- Botones -->
+    <div class="row justify-content-center botones">
+      <button type="button" class="btn btn-primary" (click)="Pagina=1; Buscar();">
+            <i class="fa fa-search"> </i> Buscar
+        </button>
+      <button type="button" class="btn btn-primary" (click)="Agregar()">
+            <i class="fa fa-plus"> </i> 
+            Agregar
+        </button>
+    </div>
+  
+
+
+<!-- Tabla de resutados de busqueda y Paginador-->
+<div id="divTablaResultados" *ngIf="AccionABMC == 'L' && Items?.length > 0">
+  <table class="table table-hover table-sm table-bordered table-striped">
+    <thead>
+      <tr>
+        <th class="text-center">Nombre</th>
+        <th class="text-center">Legajo</th>
+        <th class="text-center">FechaNac</th>
+        <th class="text-center">Regular</th>
+        <th class="text-center">BarrioID</th>   
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let Item of Items">
+        <td>{{Item.EstudianteAyN | uppercase}}</td> 
+        <td class="text-right">{{Item.EstudianteLegajo}}</td>
+        <td class="text-right">{{Item.EstudianteFechaNac| date:'dd/MM/yyyy'}}</td>
+        <td>{{Item.EstudianteRegular ? 'SI' : 'NO'}}</td>
+        <td class="text-right">{{GetBarriosNombre(Item.BarrioID)}}</td>       
+        <td class="text-center text-nowrap">
+          <button class="btn btn-sm btn-outline-primary" title="Consultar" (click)="Consultar(Item)">
+                    <i class="fa fa-eye"></i>
+                <!-- </button>
+          <button class="btn btn-sm btn-outline-primary" title="Modificar" (click)="Modificar(Item)">
+                    <i class="fa fa-pencil"></i>
+                </button> -->
+          <button class="btn btn-sm" [ngClass]="{'btn-outline-danger': Item.EstudianteRegular, 'btn-outline-success': !Item.EstudianteRegular}"
+                    title="{{Item.EstudianteRegular ? 'Desactivar':'Activar'}}" (click)="ActivarDesactivar(Item)">
+                    <i class="fa fa-{{Item.EstudianteRegular ? 'times':'check'}}"></i>
+                </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Paginador-->
+  <div class="paginador">
+    <div class="row">
+      <div class="col">
+        <span class="pyBadge">Registros: {{RegistrosTotal}}</span>
+      </div>
+      <div class="col text-center">
+        <ngb-pagination [(page)]="Pagina" (pageChange)="Buscar()" [pageSize]="10" [maxSize]="10"
+          [collectionSize]="RegistrosTotal"></ngb-pagination>
+      </div>
+      <div class="col text-right">
+        <button class="btn btn-primary" (click)="ImprimirListado()"><i class="fa fa-print"></i>
+                    Imprimir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--No se encontraron registros-->
+<div class="alert alert-info mensajesAlert" *ngIf="AccionABMC == 'L' && Items?.length== 0">
+  <i class="fa fa-exclamation-sign"></i>{{Mensajes['SD']}}
+  <!-- texto: No se encontraron registros -->
+</div>
+
+<!-- Registro en Alta,Modificacion y Consulta -->
+<form name="FormRegistro" [formGroup]='FormRegistro' *ngIf="AccionABMC != 'L'">
+  <div class="container-fluid">
+    <fieldset [disabled]="AccionABMC==='C'">
+      <!--campo nombre-->
+      <div class="row">
+        <div class="col-sm-4 col-md-3 offset-md-1">
+          <label class="col-form-label" for="Nombre">Nombre<span
+                    class="text-danger">*</span>:</label>
+        </div>
+        <div class="col-sm-8 col-md-6">
+          <input type="text" class="form-control" formControlName="Nombre"
+         [ngClass]="{'is-invalid': (FormRegistro.controls['Nombre'].touched || submitted)  
+            && FormRegistro.controls['Nombre'].errors}"/>
+
+          <div class="validacion" *ngIf="(FormRegistro.controls['Nombre'].touched || submitted) 
+                        && FormRegistro.controls['Nombre'].hasError('required')">
+            Dato requerido.
+          </div>
+          <div class="validacion"
+            *ngIf="(FormRegistro.controls['Nombre'].touched || submitted) 
+                       && (FormRegistro.controls['Nombre'].hasError('minlength') || FormRegistro.controls['Nombre'].hasError('maxlength')) ">
+            Dato texto, 4 a 55 caracteres.
+          </div>
+
+        </div>
+      </div>
+
+
+      <!--campo legajo-->
+      <div class="row">
+        <div class="col-sm-4 col-md-3 offset-md-1">
+          <label class="col-form-label" for="Legajo">
+            Legajo<span class="text-danger">*</span>:
+          </label>
+        </div>
+        <div class="col-sm-8 col-md-6">
+          <input type="text" name="Legajo" class="form-control" formControlName="Legajo"
+        [ngClass]="{'is-invalid': (FormRegistro.controls['Legajo'].touched || submitted)  
+            && FormRegistro.controls['Legajo'].errors}" />
+          <div class="validacion" *ngIf="(FormRegistro.controls['Legajo'].touched || submitted) 
+                        && FormRegistro.controls['Legajo'].hasError('required')">
+            Dato requerido.
+          </div>
+          <div class="validacion" *ngIf="(FormRegistro.controls['Legajo'].touched || submitted) 
+                        && FormRegistro.controls['Legajo'].hasError('pattern')">
+            Dato numérico, 1 a 7 dígitos.
+          </div>
+        </div>
+      </div>
+
+      
+      <!--campo BarrioID-->
+      <div class="row">
+        <div class="col-sm-4 col-md-3 offset-md-1">
+          <label class="col-form-label" for="BarrioID">
+            BarrioID<span class="text-danger">*</span>:
+          </label>
+        </div>
+        <div class="col-sm-8 col-md-6">
+          <select name="BarrioID" class="form-control" formControlName="BarrioID"
+        [ngClass]="{'is-invalid': (FormRegistro.controls['BarrioID'].touched || submitted)  
+            && FormRegistro.controls['BarrioID'].errors}" >
+                    <option *ngFor="let opt of Barrios" [ngValue]="opt.BarrioID">
+                        ‌{{ opt.BarrioNombre }}
+                    <option>
+                </select>
+          <div class="validacion" *ngIf="(FormRegistro.controls['BarrioID'].touched || submitted) 
+                        && FormRegistro.controls['BarrioID'].hasError('required')">
+            Dato requerido.
+          </div>
+        </div>
+      </div>
+
+      <!--campo FechaNac-->
+      <div class="row">
+        <div class="col-sm-4 col-md-3 offset-md-1">
+          <label class="col-form-label">FechaNac<span
+                    class="text-danger">*</span>:
+          </label>
+        </div>
+        <div class="col-sm-8 col-md-6">
+          <input class="form-control" formControlName="FechaNac"
+                           name="FechaNac"
+                           [ngClass]="{'is-invalid': (FormRegistro.controls['FechaNac'].touched || submitted)  
+            && FormRegistro.controls['FechaNac'].errors}" />
+
+          <div class="validacion" *ngIf="(FormRegistro.controls['FechaNac'].touched || submitted) 
+                       && FormRegistro.controls['FechaNac'].hasError('required')">
+            Dato requerido.
+          </div>
+          <div class="validacion" *ngIf="(FormRegistro.controls['FechaNac'].touched || submitted) 
+                       && FormRegistro.controls['FechaNac'].hasError('pattern')">
+            Dato fecha, formato dd/mm/aaaa.
+          </div>
+        </div>
+      </div>
+
+      <!--campo Regular-->
+      <div class="row">
+        <div class="col-sm-4 col-md-3 offset-md-1">
+          <label class="col-form-label" for="Regular">Regular:</label>
+        </div>
+        <div class="col-sm-8 col-md-6">
+          <!-- ref?? disabled html no fucniona en reactive forms? -->
+          <select class="form-control" name="Regular" formControlName="Regular" [disabled]="true">
+            <option *ngFor="let opt of OpcionesRegular"  [ngValue]="opt.Id">
+                        ‌{{ opt.Nombre }}
+			      </option>            
+        </select>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Botones Grabar, Cancelar/Volver' -->
+    <hr>
+    <div class="row justify-content-center botones">
+      <button type="button" *ngIf="AccionABMC!=='C'" class="btn btn-primary" (click)="Grabar()">
+            <i class="fa fa-check"></i> Grabar
+        </button>
+      &nbsp;
+      <button type="button" class="btn btn-warning" (click)="Volver()">
+            <i class="fa fa-undo"></i> {{AccionABMC=='C' ? 'Volver' : 'Cancelar'}}
+        </button>
+    </div>
+
+    <!--texto: Revisar los datos ingresados...-->
+    <div *ngIf="submitted && FormRegistro.invalid" class="row alert alert-danger mensajesAlert">
+      <i class="fa fa-exclamation-sign"></i>{{Mensajes['RD']}}
+    </div>
+
+  </div>
+</form>

@@ -20,6 +20,7 @@ import { InicioComponent } from './components/inicio/inicio.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { ArticulosFamiliasComponent } from './components/articulos-familias/articulos-familias.component';
 import { ArticulosComponent } from './components/articulos/articulos.component';
+import { EstudiantesComponent } from './components/estudiantes/estudiantes.component';
 import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
 import { MyInterceptor } from './shared/my-interceptor';
 
@@ -39,6 +40,7 @@ import { FormFocusDirective } from './shared/form-focus.directive';
       { path: '', redirectTo: '/inicio', pathMatch: 'full' },
       { path: 'inicio', component: InicioComponent },
       { path: 'articulos', component: ArticulosComponent },
+      { path: 'estudiantes', component: EstudiantesComponent },
       { path: 'articulosfamilias', component: ArticulosFamiliasComponent },
       { path: '**', redirectTo: '/inicio', pathMatch: 'full' },
     ]),
@@ -54,6 +56,7 @@ import { FormFocusDirective } from './shared/form-focus.directive';
     MenuComponent,
     ArticulosFamiliasComponent,
     ArticulosComponent,
+    EstudiantesComponent,
     ModalDialogComponent,
   ],
   entryComponents: [ModalDialogComponent],
